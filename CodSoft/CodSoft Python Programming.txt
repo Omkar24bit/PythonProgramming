@@ -1,0 +1,251 @@
+1) To Do List
+---------------
+class ToDoList:
+    def __init__(self):
+        self.tasks = []
+
+    def add_task(self, task):
+        self.tasks.append(task)
+        print("Task added successfully!")
+
+    def remove_task(self, task_index):
+        if 0 <= task_index < len(self.tasks):
+            del self.tasks[task_index]
+            print("Task removed successfully!")
+        else:
+            print("Invalid task index!")
+
+    def display_tasks(self):
+        if self.tasks:
+            print("Your To-Do List:")
+            for index, task in enumerate(self.tasks):
+                print(f"{index + 1}. {task}")
+        else:
+            print("Your To-Do List is empty.")
+
+def main():
+    todo_list = ToDoList()
+
+    while True:
+        print("\n1. Add Task")
+        print("2. Remove Task")
+        print("3. Display Tasks")
+        print("4. Exit")
+
+        choice = input("Enter your choice: ")
+
+        if choice == "1":
+            task = input("Enter task: ")
+            todo_list.add_task(task)
+        elif choice == "2":
+            task_index = int(input("Enter task index to remove: ")) - 1
+            todo_list.remove_task(task_index)
+        elif choice == "3":
+            todo_list.display_tasks()
+        elif choice == "4":
+            print("Exiting...")
+            break
+        else:
+            print("Invalid choice! Please choose again.")
+
+if __name__ == "__main__":
+    main()
+
+
+
+2) Calculator
+--------------
+
+def add(x, y):
+    return x + y
+
+def subtract(x, y):
+    return x - y
+
+def multiply(x, y):
+    return x * y
+
+def divide(x, y):
+    if y == 0:
+        return "Error! Division by zero."
+    else:
+        return x / y
+
+print("Welcome to Simple Calculator!")
+print("Select operation:")
+print("1. Addition")
+print("2. Subtraction")
+print("3. Multiplication")
+print("4. Division")
+
+while True:
+    choice = input("Enter choice (1/2/3/4): ")
+
+    if choice in ('1', '2', '3', '4'):
+        num1 = float(input("Enter first number: "))
+        num2 = float(input("Enter second number: "))
+
+        if choice == '1':
+            print("Result:", add(num1, num2))
+        elif choice == '2':
+            print("Result:", subtract(num1, num2))
+        elif choice == '3':
+            print("Result:", multiply(num1, num2))
+        elif choice == '4':
+            print("Result:", divide(num1, num2))
+    else:
+        print("Invalid input!")
+
+    again = input("Do you want to perform another calculation? (yes/no): ")
+    if again.lower() != 'yes':
+        print("Goodbye!")
+        break
+
+
+
+3) Password Generator
+----------------------
+
+import random
+import string
+
+def generate_password(length):
+    characters = string.ascii_letters + string.digits + string.punctuation
+    password = ''.join(random.choice(characters) for _ in range(length))
+    return password
+
+def main():
+    print("Welcome to Password Generator!")
+    while True:
+        try:
+            length = int(input("Enter the desired length of the password: "))
+            if length <= 0:
+                print("Length must be greater than zero.")
+                continue
+            password = generate_password(length)
+            print("Generated Password:", password)
+            break
+        except ValueError:
+            print("Invalid input! Please enter a valid number.")
+
+if __name__ == "__main__":
+    main()
+
+
+4) Weather Forecast
+--------------------
+
+import requests
+
+def get_weather_data(location):
+    api_key = 'YOUR_API_KEY'  # Replace 'YOUR_API_KEY' with your OpenWeatherMap API key
+    url = f'http://api.openweathermap.org/data/2.5/weather?q={location}&appid={api_key}&units=metric'
+    response = requests.get(url)
+    data = response.json()
+    return data
+
+def display_weather_data(data):
+    if data['cod'] == 200:  # Check if API request was successful
+        city = data['name']
+        temperature = data['main']['temp']
+        humidity = data['main']['humidity']
+        wind_speed = data['wind']['speed']
+        description = data['weather'][0]['description']
+
+        print(f"Weather forecast for {city}:")
+        print(f"Temperature: {temperature}°C")
+        print(f"Humidity: {humidity}%")
+        print(f"Wind Speed: {wind_speed} m/s")
+        print(f"Description: {description}")
+    else:
+        print("Error:", data['message'])
+
+def main():
+    location = input("Enter city name or zip code: ")
+    weather_data = get_weather_data(location)
+    display_weather_data(weather_data)
+
+if __name__ == "__main__":
+    main()
+
+
+
+5) Quiz Game
+-------------
+
+import random
+
+class Quiz:
+    def __init__(self, questions):
+        self.questions = questions
+        self.score = 0
+
+    def display_welcome_message(self):
+        print("Welcome to the Quiz Game!")
+        print("You will be asked multiple-choice questions.")
+        print("Let's begin!\n")
+
+    def present_quiz_questions(self):
+        random.shuffle(self.questions)
+        for q in self.questions:
+            print(q['question'])
+            for i, choice in enumerate(q['choices'], 1):
+                print(f"{i}. {choice}")
+            user_answer = input("Enter your choice (1/2/3): ")
+            self.evaluate_user_answer(q, int(user_answer))
+
+    def evaluate_user_answer(self, question, user_answer):
+        correct_answer = question['correct']
+        if user_answer == correct_answer:
+            print("Correct!")
+            self.score += 1
+        else:
+            print("Incorrect!")
+            print("Correct answer:", question['choices'][correct_answer - 1])
+        print()
+
+    def display_final_results(self):
+        print("Quiz finished!")
+        print(f"Your score: {self.score}/{len(self.questions)}")
+        if self.score == len(self.questions):
+            print("Congratulations! You got all the questions right.")
+        elif self.score >= len(self.questions) / 2:
+            print("Good job! You did well.")
+        else:
+            print("You can do better. Keep practicing!")
+
+    def play_again(self):
+        return input("Do you want to play again? (yes/no): ").lower() == 'yes'
+
+def main():
+    questions = [
+        {
+            'question': 'What is the capital of France?',
+            'choices': ['Paris', 'London', 'Berlin'],
+            'correct': 1
+        },
+        {
+            'question': 'Which planet is known as the Red Planet?',
+            'choices': ['Venus', 'Mars', 'Jupiter'],
+            'correct': 2
+        },
+        {
+            'question': 'What is the powerhouse of the cell?',
+            'choices': ['Nucleus', 'Mitochondria', 'Ribosome'],
+            'correct': 2
+        }
+    ]
+
+    quiz = Quiz(questions)
+    while True:
+        quiz.display_welcome_message()
+        quiz.present_quiz_questions()
+        quiz.display_final_results()
+        if not quiz.play_again():
+            print("Thanks for playing! Goodbye.")
+            break
+
+if __name__ == "__main__":
+    main()
+
+													
